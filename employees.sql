@@ -50,13 +50,30 @@ FROM dept_emp de
 JOIN employees e
 ON de.emp_id=e.emp_id
 
-GROUP BY calendar_year, e.gender
+GROUP BY calendar_year, e.gender HAVING calendar_year >= 1990
 ORDER BY calendar_year, e.gender
-
-
 
 -- Query 8 What is the number of managers hired each calendar year. 
 
+SELECT EXTRACT(year from from_date) AS year_hired, COUNT(*) AS total
+FROM dept_manager 
+GROUP BY year_hired
+ORDER BY year_hired
+
+
 -- Query 9 What will be the department wise break up of managers ?
 
+SELECT dept_name AS Department, COUNT(emp_id) AS Total_Number_of_Managers
+FROM dept_manager de
+JOIN departments d
+ON de.dept_no=d.dept_no
+GROUP BY dept_name
+
 -- Query 10 What is the number of male managers and female managers hired each calendar year from the year 1990 onwards?
+
+SELECT EXTRACT(year from dm.from_date) AS calendar_year, COUNT(dm.emp_id) AS Total_Number_of_Managers, e.gender AS Gender
+FROM dept_manager dm
+JOIN employees e
+ON dm.emp_id=e.emp_id
+GROUP BY calendar_year, e.gender HAVING calendar_year >= 1990
+ORDER BY calendar_year, e.gender
